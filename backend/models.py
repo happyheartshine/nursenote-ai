@@ -2,16 +2,30 @@ from pydantic import BaseModel, Field
 
 
 class GenerateRequest(BaseModel):
-    """Request model for the /generate endpoint."""
-    note: str = Field(..., description="訪問記録の自由記述テキスト", min_length=1)
+    """Request body for /generate."""
+
+    chief_complaint: str = Field(
+        default="",
+        description="主訴（任意入力）",
+    )
+    s: str = Field(
+        default="",
+        description="S（主観）",
+    )
+    o: str = Field(
+        default="",
+        description="O（客観）",
+    )
 
 
 class GenerateResponse(BaseModel):
-    """Response model for the /generate endpoint."""
-    output: str = Field(..., description="AI generated SOAP + care plan")
+    """Successful response body."""
+
+    output: str = Field(..., description="AI生成テキスト（SOAP＋看護計画）")
 
 
 class ErrorResponse(BaseModel):
-    """Error response model."""
-    error: str = Field(..., description="Error message")
+    """Error response payload."""
+
+    error: str = Field(..., description="エラーメッセージ")
 

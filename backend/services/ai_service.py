@@ -1,77 +1,52 @@
-"""AI service for generating SOAP notes and care plans using OpenAI."""
+"""AI service layer for generating SOAP notes via OpenAI."""
 
 import os
 from typing import Optional
-from openai import OpenAI
-from openai import APIError, APIConnectionError, RateLimitError
+
+from openai import OpenAI, OpenAIError
+
+
+class AIServiceError(RuntimeError):
+    """Raised when AI generation fails."""
 
 
 class AIService:
-    """Service for interacting with OpenAI API."""
-    
-    def __init__(self):
-        """Initialize the AI service with OpenAI client."""
+    """Thin wrapper around the OpenAI Responses API."""
+
+    def __init__(self, model: Optional[str] = None):
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
-            raise ValueError("OPENAI_API_KEY environment variable is not set")
-        
+            raise AIServiceError("OPENAI_API_KEY environment variable is not set.")
+
         self.client = OpenAI(api_key=api_key)
-        self.model = "gpt-4o-mini"  # Using gpt-4o-mini as gpt-4.1-mini doesn't exist
-    
+        self.model = model or os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
+
     def generate_output(self, prompt: str) -> str:
-        """
-        Generate output using OpenAI API.
-        
-        Args:
-            prompt: The complete prompt string
-            
-        Returns:
-            Generated text output
-            
-        Raises:
-            APIError: If OpenAI API returns an error
-            APIConnectionError: If connection to OpenAI fails
-            RateLimitError: If rate limit is exceeded
-            ValueError: If API key is missing or invalid
-        """
+        """Send prompt to OpenAI and return the generated text."""
         try:
-            response = self.client.chat.completions.create(
+            response = self.client.responses.create(
                 model=self.model,
-                messages=[
-                    {"role": "system", "content": "You are an AI assistant specialized in psychiatric home-visit nursing documentation."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.7,
-                max_tokens=1000
+                input=prompt,
+                temperature=0.3,
+                max_output_tokens=700,
             )
 
-            print('ai response', response);
-            if not response.choices or not response.choices[0].message.content:
-                raise ValueError("Empty response from OpenAI API")
-            
-            return response.choices[0].message.content.strip()
-            
-        except APIConnectionError as e:
-            raise ConnectionError(f"Failed to connect to OpenAI API: {str(e)}")
-        except RateLimitError as e:
-            raise ValueError(f"OpenAI API rate limit exceeded: {str(e)}")
-        except APIError as e:
-            raise ValueError(f"OpenAI API error: {str(e)}")
-        except Exception as e:
-            raise ValueError(f"Unexpected error during AI generation: {str(e)}")
+            output_text = response.output_text if hasattr(response, "output_text") else None
+            if not output_text:
+                raise AIServiceError("Empty response from OpenAI API.")
+            return output_text.strip()
+
+        except OpenAIError as exc:
+            raise AIServiceError(f"OpenAI API error: {exc}") from exc
+        except Exception as exc:  # pragma: no cover - defensive
+            raise AIServiceError(f"Unexpected error during AI generation: {exc}") from exc
 
 
-# Singleton instance
 _ai_service: Optional[AIService] = None
 
 
 def get_ai_service() -> AIService:
-    """
-    Get or create the AI service singleton.
-    
-    Returns:
-        AIService instance
-    """
+    """Return singleton AI service instance."""
     global _ai_service
     if _ai_service is None:
         _ai_service = AIService()

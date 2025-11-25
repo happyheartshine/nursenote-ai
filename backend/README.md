@@ -1,154 +1,100 @@
-# Nurse Note AI Backend
+# NurseNote AI Backend (Milestone 1)
 
-FastAPI backend for generating SOAP notes and care plans from psychiatric home-visit nursing documentation.
+FastAPI backend that accepts psychiatric home-visit nursing inputs (chief complaint, S, O) and returns an AI-generated SOAP summary plus a nursing care plan.
 
-## Features
+## Requirements
 
-- **POST /generate**: Generate SOAP notes and care plans from free-text visit notes
-- OpenAI GPT-4o-mini integration
-- Japanese psychiatric nursing documentation format
-- Comprehensive error handling
-- CORS enabled for development
+- Python 3.10+
+- OpenAI API key (model: `gpt-4.1-mini` or compatible)
+- Recommended: virtualenv/uvenv/pyenv for isolated installs
 
-## Prerequisites
+## Setup
 
-- Python 3.10 or higher
-- OpenAI API key
+1. **Install dependencies**
 
-## Installation
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
 
-1. Install dependencies:
+2. **Configure environment**
 
-```bash
-pip install -r requirements.txt
-```
+   Create `backend/.env`:
 
-2. Set up environment variables:
+   ```
+   OPENAI_API_KEY=sk-xxxx
+   # optional: override defaults
+   # OPENAI_MODEL=gpt-4.1-mini
+   # ALLOWED_ORIGINS=https://your-frontend.vercel.app,https://*.ngrok-free.app
+   ```
 
-Create a `.env` file in the `backend` directory:
+   `python-dotenv` loads this automatically when the app boots.
 
-```
-OPENAI_API_KEY=your_openai_api_key_here
-```
+3. **Run the server**
 
-Or export it in your shell:
+   ```bash
+   uvicorn main:app --reload --port 8000
+   ```
 
-```bash
-export OPENAI_API_KEY=your_openai_api_key_here
-```
+   Production example:
 
-## Running the Server
+   ```bash
+   uvicorn main:app --host 0.0.0.0 --port 8000
+   ```
 
-### Development Mode (with auto-reload)
+## API
 
-```bash
-uvicorn main:app --reload
-```
+### POST `/generate`
 
-The server will start on `http://localhost:8000`
+Request body:
 
-### Production Mode
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
-## API Endpoints
-
-### POST /generate
-
-Generate SOAP note and care plan from a nurse's visit note.
-
-**Request:**
 ```json
 {
-  "note": "訪問記録の自由記述テキスト"
+  "chief_complaint": "服薬がうまくいかないとの訴え",
+  "s": "眠れない日が続き不安だと繰り返し話される。",
+  "o": "夜間覚醒が多く、服薬残薬が30錠見られた。"
 }
 ```
 
-**Response:**
+- All fields accept empty strings.
+- At least one of `s` or `o` must contain non-whitespace text; otherwise the API returns `400 { "error": "SまたはOのいずれか一方は必須です。" }`.
+
+Successful response:
+
 ```json
 {
-  "output": "S（主観）:\nO（客観）:\nA（アセスメント）:\nP（計画）:\n\n【看護計画書】\n長期目標:\n短期目標:\n看護援助の方針:"
+  "output": "S（主観）:\n...\n\n【看護計画書】\n長期目標:\n...\n"
 }
 ```
 
-**Error Response:**
-```json
-{
-  "error": "Failed to generate output"
-}
-```
+Possible error payloads (always JSON):
 
-### GET /
+| Status | Body example |
+| --- | --- |
+| 400 | `{ "error": "SまたはOのいずれか一方は必須です。" }` |
+| 502 | `{ "error": "AI生成中にエラーが発生しました。" }` |
+| 500 | `{ "error": "AI生成中にエラーが発生しました。" }` |
 
-Health check endpoint.
+### GET `/health`
 
-**Response:**
-```json
-{
-  "status": "ok",
-  "message": "Nurse Note AI Backend is running"
-}
-```
+Basic readiness probe returning `{"status":"ok"}`.
 
-## Project Structure
+## Architecture
 
 ```
 backend/
-├── main.py                 # FastAPI application and endpoints
-├── models.py               # Pydantic request/response models
+├── main.py                # FastAPI app, routing, CORS, error handling
+├── models.py              # Pydantic request/response schemas
 ├── services/
-│   └── ai_service.py       # OpenAI service integration
+│   └── ai_service.py      # OpenAI Responses API wrapper
 ├── utils/
-│   └── prompt_template.py  # Prompt template for AI generation
-├── requirements.txt        # Python dependencies
-└── README.md              # This file
-```
-
-## Error Handling
-
-The API handles various error scenarios:
-
-- **400 Bad Request**: Validation errors (invalid request format)
-- **500 Internal Server Error**: AI generation failures, missing API key
-- **503 Service Unavailable**: Connection errors to OpenAI API
-
-All errors return JSON format:
-```json
-{
-  "error": "Error message"
-}
-```
-
-## Development
-
-### Testing the API
-
-You can test the API using curl:
-
-```bash
-curl -X POST "http://localhost:8000/generate" \
-  -H "Content-Type: application/json" \
-  -d '{"note": "患者は本日、不安が強く、睡眠が取れていない様子でした。"}'
-```
-
-Or using Python requests:
-
-```python
-import requests
-
-response = requests.post(
-    "http://localhost:8000/generate",
-    json={"note": "患者は本日、不安が強く、睡眠が取れていない様子でした。"}
-)
-print(response.json())
+│   └── prompt_template.py # Prompt construction logic
+├── requirements.txt
+└── README.md
 ```
 
 ## Notes
 
-- The model used is `gpt-4o-mini` (fast and stable)
-- CORS is enabled for all origins (`*`) for development
-- The prompt template is optimized for Japanese psychiatric home-visit nursing documentation
-- Output format follows standard SOAP notation and care plan structure
-
+- The prompt enforces the SOAP + care-plan structure and uses psychiatric home-visit vocabulary.
+- CORS defaults to `*` for development. Set `ALLOWED_ORIGINS` for production domains (e.g., Vercel, ngrok).
+- `OPENAI_MODEL` env var allows swapping to future compatible models without code changes.

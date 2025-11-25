@@ -1,5 +1,5 @@
 'use client'
-
+export const dynamic = "force-dynamic";
 import { useMemo, useRef, useState } from 'react'
 import OutputCard from '@/components/OutputCard'
 import { copyToClipboard } from '@/lib/copyToClipboard'

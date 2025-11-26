@@ -329,7 +329,7 @@ export default function HomePageClient() {
                 type="button"
                 onClick={handleGenerate}
                 disabled={loading || !canSubmit}
-                className="flex-1 rounded-lg bg-blue-600 py-3 text-lg font-medium text-white transition-colors disabled:cursor-not-allowed disabled:bg-gray-400"
+                className="flex-1 sm:basis-[60%] rounded-lg bg-blue-600 py-3 text-lg font-medium text-white transition-colors disabled:cursor-not-allowed disabled:bg-gray-400"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
@@ -363,7 +363,7 @@ export default function HomePageClient() {
                 type="button"
                 onClick={handleClear}
                 disabled={loading}
-                className="rounded-lg border border-gray-300 bg-white py-3 text-lg font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed"
+                className="flex-1 sm:basis-[40%] rounded-lg border border-gray-300 bg-white py-3 text-lg font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed"
               >
                 入力をクリア
               </button>

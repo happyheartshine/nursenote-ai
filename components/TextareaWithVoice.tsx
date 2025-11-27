@@ -48,7 +48,7 @@ export default function TextareaWithVoice({
           disabled={disabled}
           rows={rows}
         />
-        <div className="absolute right-2 top-2">
+        <div className="absolute right-4 top-2">
           <VoiceInputButton onResult={onVoiceResult} disabled={disabled} />
         </div>
       </div>

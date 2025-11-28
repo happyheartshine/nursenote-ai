@@ -107,7 +107,7 @@ export default function HomePageClient() {
       } else {
         responseText = await response.text()
       }
-
+      console.log('API Response:', responseText)
       const { soap, plan } = parseApiResponse(responseText)
 
       // Save visit info

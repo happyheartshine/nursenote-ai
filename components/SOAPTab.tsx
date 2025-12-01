@@ -491,6 +491,8 @@ export default function SOAPTab() {
               endTime={endTime || defaults.endTime}
               selectedNurses={selectedNurses.length > 0 ? selectedNurses : defaults.selectedNurses}
               diagnosis={diagnosis || defaults.diagnosis}
+              onSoapUpdate={setSoapOutput}
+              onPlanUpdate={setPlanOutput}
             />
 
           <button

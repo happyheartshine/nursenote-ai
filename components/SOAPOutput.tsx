@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { SoapOutput, PlanOutput } from './types'
 
 interface SOAPOutputProps {
@@ -10,6 +11,8 @@ interface SOAPOutputProps {
   endTime: string
   selectedNurses: string[]
   diagnosis: string
+  onSoapUpdate?: (updated: SoapOutput) => void
+  onPlanUpdate?: (updated: PlanOutput) => void
 }
 
 export default function SOAPOutput({
@@ -20,13 +23,144 @@ export default function SOAPOutput({
   endTime,
   selectedNurses,
   diagnosis,
+  onSoapUpdate,
+  onPlanUpdate,
 }: SOAPOutputProps) {
+  const [editingField, setEditingField] = useState<string | null>(null)
+  const [editValue, setEditValue] = useState('')
+
   const formatDate = (dateStr: string) => {
     if (!dateStr) return ''
     const date = new Date(dateStr)
     const weekdays = ['日', '月', '火', '水', '木', '金', '土']
     const weekday = weekdays[date.getDay()]
     return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}（${weekday}）`
+  }
+
+  const handleEdit = (field: string, currentValue: string) => {
+    setEditingField(field)
+    setEditValue(currentValue || '')
+  }
+
+  const handleSave = () => {
+    if (!editingField) return
+
+    if (editingField === 's' || editingField === 'o') {
+      // Update S or O
+      const updated: SoapOutput = {
+        ...soapOutput,
+        [editingField]: editValue,
+      }
+      onSoapUpdate?.(updated)
+    } else if (editingField.startsWith('a.')) {
+      // Update A sub-field
+      const subField = editingField.replace('a.', '') as keyof typeof soapOutput.a
+      const updated: SoapOutput = {
+        ...soapOutput,
+        a: {
+          ...soapOutput.a,
+          [subField]: editValue,
+        },
+      }
+      onSoapUpdate?.(updated)
+    } else if (editingField.startsWith('p.')) {
+      // Update P sub-field
+      const subField = editingField.replace('p.', '') as keyof typeof soapOutput.p
+      const updated: SoapOutput = {
+        ...soapOutput,
+        p: {
+          ...soapOutput.p,
+          [subField]: editValue,
+        },
+      }
+      onSoapUpdate?.(updated)
+    } else if (editingField.startsWith('plan.')) {
+      // Update Plan field
+      if (!planOutput) return
+      const subField = editingField.replace('plan.', '') as keyof PlanOutput
+      const updated: PlanOutput = {
+        ...planOutput,
+        [subField]: editValue,
+      }
+      onPlanUpdate?.(updated)
+    }
+
+    setEditingField(null)
+    setEditValue('')
+  }
+
+  const handleCancel = () => {
+    setEditingField(null)
+    setEditValue('')
+  }
+
+  const EditableContent = ({
+    field,
+    value,
+    className = '',
+  }: {
+    field: string
+    value: string
+    className?: string
+  }) => {
+    const isEditing = editingField === field
+    const displayValue = value || '（未入力）'
+
+    if (isEditing) {
+      return (
+        <div className="space-y-2">
+          <textarea
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            className={`w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-[15px] font-normal resize-y min-h-[100px] ${className}`}
+            rows={4}
+            autoFocus
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={handleSave}
+              className="px-4 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              保存
+            </button>
+            <button
+              onClick={handleCancel}
+              className="px-4 py-1.5 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              キャンセル
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="group relative">
+        <p className={`text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal ${className}`}>
+          {displayValue}
+        </p>
+        <button
+          onClick={() => handleEdit(field, value)}
+          className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+          title="編集"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            />
+          </svg>
+        </button>
+      </div>
+    )
   }
 
   return (
@@ -38,9 +172,7 @@ export default function SOAPOutput({
           <span className="text-gray-600 font-medium text-base">主観</span>
         </h3>
         <div className="ml-[52px] mt-3">
-          <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
-            {soapOutput.s || '（未入力）'}
-          </p>
+          <EditableContent field="s" value={soapOutput.s} />
         </div>
       </div>
 
@@ -51,9 +183,7 @@ export default function SOAPOutput({
           <span className="text-gray-600 font-medium text-base">客観</span>
         </h3>
         <div className="ml-[52px] mt-3">
-          <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
-            {soapOutput.o || '（未入力）'}
-          </p>
+          <EditableContent field="o" value={soapOutput.o} />
         </div>
       </div>
 
@@ -66,29 +196,21 @@ export default function SOAPOutput({
         <div className="ml-13 space-y-5">
           <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-amber-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【症状推移】</h4>
-            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
-              {soapOutput.a.症状推移 || '（未入力）'}
-            </p>
+            <EditableContent field="a.症状推移" value={soapOutput.a.症状推移} />
           </div>
           <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-red-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">
               【リスク評価（自殺・他害・服薬）】
             </h4>
-            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
-              {soapOutput.a.リスク評価 || '（未入力）'}
-            </p>
+            <EditableContent field="a.リスク評価" value={soapOutput.a.リスク評価} />
           </div>
           <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【背景要因】</h4>
-            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
-              {soapOutput.a.背景要因 || '（未入力）'}
-            </p>
+            <EditableContent field="a.背景要因" value={soapOutput.a.背景要因} />
           </div>
           <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-purple-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【次回観察ポイント】</h4>
-            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
-              {soapOutput.a.次回観察ポイント || '（未入力）'}
-            </p>
+            <EditableContent field="a.次回観察ポイント" value={soapOutput.a.次回観察ポイント} />
           </div>
         </div>
       </div>
@@ -102,15 +224,11 @@ export default function SOAPOutput({
         <div className="ml-13 space-y-5">
           <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-indigo-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【本日実施した援助】</h4>
-            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
-              {soapOutput.p.本日実施した援助 || '（未入力）'}
-            </p>
+            <EditableContent field="p.本日実施した援助" value={soapOutput.p.本日実施した援助} />
           </div>
           <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-teal-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【次回以降の方針】</h4>
-            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
-              {soapOutput.p.次回以降の方針 || '（未入力）'}
-            </p>
+            <EditableContent field="p.次回以降の方針" value={soapOutput.p.次回以降の方針} />
           </div>
         </div>
       </div>
@@ -128,27 +246,27 @@ export default function SOAPOutput({
                 <span className="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span>
                 【長期目標】
               </h4>
-              <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal ml-4">
-                {planOutput.長期目標 || '（未入力）'}
-              </p>
+              <div className="ml-4">
+                <EditableContent field="plan.長期目標" value={planOutput.長期目標} />
+              </div>
             </div>
             <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
               <h4 className="text-[15px] font-semibold text-teal-900 mb-3 tracking-wide flex items-center">
                 <span className="w-2 h-2 rounded-full bg-teal-500 mr-2"></span>
                 【短期目標】
               </h4>
-              <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal ml-4">
-                {planOutput.短期目標 || '（未入力）'}
-              </p>
+              <div className="ml-4">
+                <EditableContent field="plan.短期目標" value={planOutput.短期目標} />
+              </div>
             </div>
             <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
               <h4 className="text-[15px] font-semibold text-amber-900 mb-3 tracking-wide flex items-center">
                 <span className="w-2 h-2 rounded-full bg-amber-500 mr-2"></span>
                 【看護援助の方針】
               </h4>
-              <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal ml-4">
-                {planOutput.看護援助の方針 || '（未入力）'}
-              </p>
+              <div className="ml-4">
+                <EditableContent field="plan.看護援助の方針" value={planOutput.看護援助の方針} />
+              </div>
             </div>
           </div>
         </div>

@@ -1,33 +1,34 @@
-import { TABS, TabKey } from './types'
+'use client'
+
+import { TabKey } from './HomePageClient'
 
 interface TabNavigationProps {
   activeTab: TabKey
   onTabChange: (tab: TabKey) => void
 }
 
+const TABS: { key: TabKey; label: string }[] = [
+  { key: 'soap', label: 'SOAP作成（AI生成）' },
+  { key: 'plan', label: '訪問看護計画書（案）' },
+  { key: 'records', label: '記録一覧' },
+]
+
 export default function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
   return (
-    <div className="flex gap-2 mb-6" role="tablist" aria-label="アプリケーションタブ">
-      {TABS.map((tab) => {
-        const isActive = activeTab === tab.key
-        return (
-          <button
-            key={tab.key}
-            type="button"
-            role="tab"
-            aria-selected={isActive}
-            onClick={() => onTabChange(tab.key)}
-            className={`flex-1 rounded-full border px-3 py-2 text-sm font-medium transition-colors ${
-              isActive
-                ? 'bg-blue-50 border-blue-500 text-blue-600'
-                : 'bg-gray-100 border-transparent text-gray-500 hover:text-gray-700'
-            }`}
-          >
-            {tab.label}
-          </button>
-        )
-      })}
+    <div className="flex border-b border-gray-200 mb-6 bg-white rounded-t-lg overflow-hidden">
+      {TABS.map((tab) => (
+        <button
+          key={tab.key}
+          onClick={() => onTabChange(tab.key)}
+          className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+            activeTab === tab.key
+              ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+          }`}
+        >
+          {tab.label}
+        </button>
+      ))}
     </div>
   )
 }
-

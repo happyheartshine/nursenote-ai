@@ -30,54 +30,63 @@ export default function SOAPOutput({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+    <div className="bg-white rounded-xl shadow-md border border-gray-100 p-8 space-y-8">
       {/* S */}
-      <div>
-        <h3 className="text-lg font-bold text-gray-900 mb-3">S（主観）</h3>
-        <div className="space-y-2">
-          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
+      <div className="pb-6 border-b border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
+          <span className="inline-block w-10 h-10 rounded-lg bg-blue-50 text-blue-700 font-bold text-lg mr-3 text-center leading-10">S</span>
+          <span className="text-gray-600 font-medium text-base">主観</span>
+        </h3>
+        <div className="ml-[52px] mt-3">
+          <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
             {soapOutput.s || '（未入力）'}
           </p>
         </div>
       </div>
 
       {/* O */}
-      <div>
-        <h3 className="text-lg font-bold text-gray-900 mb-3">O（客観）</h3>
-        <div className="space-y-2">
-          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
+      <div className="pb-6 border-b border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
+          <span className="inline-block w-10 h-10 rounded-lg bg-green-50 text-green-700 font-bold text-lg mr-3 text-center leading-10">O</span>
+          <span className="text-gray-600 font-medium text-base">客観</span>
+        </h3>
+        <div className="ml-[52px] mt-3">
+          <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
             {soapOutput.o || '（未入力）'}
           </p>
         </div>
       </div>
 
       {/* A */}
-      <div>
-        <h3 className="text-lg font-bold text-gray-900 mb-3">A（アセスメント）</h3>
-        <div className="space-y-4">
-          <div>
-            <h4 className="text-base font-semibold text-gray-800 mb-2">【症状推移】</h4>
-            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
+      <div className="pb-6 border-b border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-5 tracking-tight">
+          <span className="inline-block w-10 h-10 rounded-lg bg-amber-50 text-amber-700 font-bold text-lg mr-3 text-center leading-10">A</span>
+          <span className="text-gray-600 font-medium text-base">アセスメント</span>
+        </h3>
+        <div className="ml-13 space-y-5">
+          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-amber-200">
+            <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【症状推移】</h4>
+            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
               {soapOutput.a.症状推移 || '（未入力）'}
             </p>
           </div>
-          <div>
-            <h4 className="text-base font-semibold text-gray-800 mb-2">
+          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-red-200">
+            <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">
               【リスク評価（自殺・他害・服薬）】
             </h4>
-            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
+            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
               {soapOutput.a.リスク評価 || '（未入力）'}
             </p>
           </div>
-          <div>
-            <h4 className="text-base font-semibold text-gray-800 mb-2">【背景要因】</h4>
-            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
+          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-200">
+            <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【背景要因】</h4>
+            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
               {soapOutput.a.背景要因 || '（未入力）'}
             </p>
           </div>
-          <div>
-            <h4 className="text-base font-semibold text-gray-800 mb-2">【次回観察ポイント】</h4>
-            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
+          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-purple-200">
+            <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【次回観察ポイント】</h4>
+            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
               {soapOutput.a.次回観察ポイント || '（未入力）'}
             </p>
           </div>
@@ -85,18 +94,21 @@ export default function SOAPOutput({
       </div>
 
       {/* P */}
-      <div>
-        <h3 className="text-xl font-bold text-gray-900 mb-3">P（計画）</h3>
-        <div className="space-y-4">
-          <div>
-            <h4 className="text-base font-semibold text-gray-800 mb-2">【本日実施した援助】</h4>
-            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
+      <div className="pb-6 border-b border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-5 tracking-tight">
+          <span className="inline-block w-10 h-10 rounded-lg bg-indigo-50 text-indigo-700 font-bold text-lg mr-3 text-center leading-10">P</span>
+          <span className="text-gray-600 font-medium text-base">計画</span>
+        </h3>
+        <div className="ml-13 space-y-5">
+          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-indigo-200">
+            <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【本日実施した援助】</h4>
+            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
               {soapOutput.p.本日実施した援助 || '（未入力）'}
             </p>
           </div>
-          <div>
-            <h4 className="text-base font-semibold text-gray-800 mb-2">【次回以降の方針】</h4>
-            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
+          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-teal-200">
+            <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【次回以降の方針】</h4>
+            <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal">
               {soapOutput.p.次回以降の方針 || '（未入力）'}
             </p>
           </div>
@@ -105,62 +117,74 @@ export default function SOAPOutput({
 
       {/* 訪問看護計画書 */}
       {planOutput && (
-        <div className="border-t border-gray-300 pt-6 mt-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-3">訪問看護計画書</h3>
-          <div className="space-y-4">
-            <div>
-              {/* <h4 className="text-base font-semibold text-gray-800 mb-2">【看護計画書】</h4> */}
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-base font-semibold text-gray-800 mb-2">【長期目標】</h4>
-                  {/* <h5 className="text-sm font-medium text-gray-700 mb-2">長期目標：</h5> */}
-                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
-                    {planOutput.長期目標 || '（未入力）'}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="text-base font-semibold text-gray-800 mb-2">【短期目標】</h4>
-                  {/* <h5 className="text-sm font-medium text-gray-700 mb-2">短期目標：</h5> */}
-                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
-                    {planOutput.短期目標 || '（未入力）'}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="text-base font-semibold text-gray-800 mb-2">【看護援助の方針】</h4>
-                  {/* <h5 className="text-sm font-medium text-gray-700 mb-2">看護援助の方針：</h5> */}
-                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
-                    {planOutput.看護援助の方針 || '（未入力）'}
-                  </p>
-                </div>
-              </div>
+        <div className="border-t-2 border-gray-200 pt-8 mt-8">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight flex items-center">
+            <span className="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full mr-3"></span>
+            訪問看護計画書
+          </h3>
+          <div className="space-y-5">
+            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-5 border border-indigo-100">
+              <h4 className="text-[15px] font-semibold text-indigo-900 mb-3 tracking-wide flex items-center">
+                <span className="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span>
+                【長期目標】
+              </h4>
+              <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal ml-4">
+                {planOutput.長期目標 || '（未入力）'}
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+              <h4 className="text-[15px] font-semibold text-teal-900 mb-3 tracking-wide flex items-center">
+                <span className="w-2 h-2 rounded-full bg-teal-500 mr-2"></span>
+                【短期目標】
+              </h4>
+              <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal ml-4">
+                {planOutput.短期目標 || '（未入力）'}
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+              <h4 className="text-[15px] font-semibold text-amber-900 mb-3 tracking-wide flex items-center">
+                <span className="w-2 h-2 rounded-full bg-amber-500 mr-2"></span>
+                【看護援助の方針】
+              </h4>
+              <p className="text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal ml-4">
+                {planOutput.看護援助の方針 || '（未入力）'}
+              </p>
             </div>
           </div>
         </div>
       )}
 
       {/* 訪問情報 */}
-      <div className="border-t border-gray-300 pt-6 mt-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">【訪問情報】</h3>
-        <div className="space-y-2">
+      <div className="border-t-2 border-gray-200 pt-8 mt-8">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 tracking-tight">【訪問情報】</h3>
+        <div className="bg-gray-50 rounded-lg p-5 space-y-3 border border-gray-200">
           {visitDate && (
-            <p className="text-base text-gray-700">
-              訪問日：{formatDate(visitDate)}
-            </p>
+            <div className="flex items-start">
+              <span className="text-gray-500 font-medium text-sm min-w-[100px]">訪問日</span>
+              <span className="text-gray-700 font-normal text-[15px]">：</span>
+              <span className="text-gray-800 font-medium text-[15px] ml-2">{formatDate(visitDate)}</span>
+            </div>
           )}
           {startTime && endTime && (
-            <p className="text-base text-gray-700">
-              訪問時間：{startTime}〜{endTime}
-            </p>
+            <div className="flex items-start">
+              <span className="text-gray-500 font-medium text-sm min-w-[100px]">訪問時間</span>
+              <span className="text-gray-700 font-normal text-[15px]">：</span>
+              <span className="text-gray-800 font-medium text-[15px] ml-2">{startTime}〜{endTime}</span>
+            </div>
           )}
           {selectedNurses.length > 0 && (
-            <p className="text-base text-gray-700">
-              担当看護師：{selectedNurses.join('・')}
-            </p>
+            <div className="flex items-start">
+              <span className="text-gray-500 font-medium text-sm min-w-[100px]">担当看護師</span>
+              <span className="text-gray-700 font-normal text-[15px]">：</span>
+              <span className="text-gray-800 font-medium text-[15px] ml-2">{selectedNurses.join('・')}</span>
+            </div>
           )}
           {diagnosis && (
-            <p className="text-base text-gray-700">
-              主疾患：{diagnosis}
-            </p>
+            <div className="flex items-start">
+              <span className="text-gray-500 font-medium text-sm min-w-[100px]">主疾患</span>
+              <span className="text-gray-700 font-normal text-[15px]">：</span>
+              <span className="text-gray-800 font-medium text-[15px] ml-2">{diagnosis}</span>
+            </div>
           )}
         </div>
       </div>

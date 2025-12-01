@@ -136,25 +136,43 @@ export function parseApiResponse(text: string): { soap: SoapOutput; plan: PlanOu
   // Remove visit information section if it appears in plan content
   planContent = planContent.replace(/【訪問情報】[\s\S]*?(?=\n\s*【|###|$)/i, '').trim()
   
-  // Parse 長期目標： (plain text with colon, not bold)
-  const longTermMatch = planContent.match(/長期目標\s*[:：]\s*\n+([\s\S]+?)(?=\n\s*短期目標|$)/) ||
-                        planContent.match(/\*\*長期目標\s*[:：]\*\*\s*\n+([\s\S]+?)(?=\n\s*短期目標|$)/i)
+  // Helper function to strip markdown formatting and section headers from content
+  const cleanContent = (text: string): string => {
+    return text
+      .replace(/\*\*/g, '') // Remove markdown bold
+      .replace(/\*\*短期目標\s*[:：]\*\*/gi, '') // Remove markdown section headers
+      .replace(/\*\*看護援助の方針\s*[:：]\*\*/gi, '')
+      .replace(/【短期目標】/g, '') // Remove bracket section headers that might be in content
+      .replace(/【看護援助の方針】/g, '')
+      .replace(/短期目標\s*[:：]/g, '')
+      .replace(/看護援助の方針\s*[:：]/g, '')
+      .trim()
+  }
+  
+  // Parse 長期目標 - prioritize bracket format, stop at next section
+  // Stop at: 【短期目標】, **短期目標：**, or 短期目標：
+  const longTermMatch = planContent.match(/【長期目標】\s*\n+([\s\S]+?)(?=\n\s*【短期目標】|\n\s*\*\*短期目標|\n\s*短期目標\s*[:：]|$)/i) ||
+                        planContent.match(/長期目標\s*[:：]\s*\n+([\s\S]+?)(?=\n\s*【短期目標】|\n\s*\*\*短期目標|\n\s*短期目標\s*[:：]|$)/) ||
+                        planContent.match(/\*\*長期目標\s*[:：]\*\*\s*\n+([\s\S]+?)(?=\n\s*【短期目標】|\n\s*\*\*短期目標|\n\s*短期目標\s*[:：]|$)/i)
   if (longTermMatch) {
-    initialPlan.長期目標 = longTermMatch[1].trim()
+    initialPlan.長期目標 = cleanContent(longTermMatch[1])
   }
 
-  // Parse 短期目標： (plain text with colon, not bold)
-  const shortTermMatch = planContent.match(/短期目標\s*[:：]\s*\n+([\s\S]+?)(?=\n\s*看護援助の方針|$)/) ||
-                         planContent.match(/\*\*短期目標\s*[:：]\*\*\s*\n+([\s\S]+?)(?=\n\s*看護援助の方針|$)/i)
+  // Parse 短期目標 - prioritize bracket format, stop at next section
+  // Stop at: 【看護援助の方針】, **看護援助の方針：**, or 看護援助の方針：
+  const shortTermMatch = planContent.match(/【短期目標】\s*\n+([\s\S]+?)(?=\n\s*【看護援助の方針】|\n\s*\*\*看護援助の方針|\n\s*看護援助の方針\s*[:：]|$)/i) ||
+                         planContent.match(/短期目標\s*[:：]\s*\n+([\s\S]+?)(?=\n\s*【看護援助の方針】|\n\s*\*\*看護援助の方針|\n\s*看護援助の方針\s*[:：]|$)/) ||
+                         planContent.match(/\*\*短期目標\s*[:：]\*\*\s*\n+([\s\S]+?)(?=\n\s*【看護援助の方針】|\n\s*\*\*看護援助の方針|\n\s*看護援助の方針\s*[:：]|$)/i)
   if (shortTermMatch) {
-    initialPlan.短期目標 = shortTermMatch[1].trim()
+    initialPlan.短期目標 = cleanContent(shortTermMatch[1])
   }
 
-  // Parse 看護援助の方針： (plain text with colon, not bold)
-  const policyMatch = planContent.match(/看護援助の方針\s*[:：]\s*\n+([\s\S]+?)(?=\n\s*---|$)/) ||
-                      planContent.match(/\*\*看護援助の方針\s*[:：]\*\*\s*\n+([\s\S]+?)(?=\n\s*---|$)/i)
+  // Parse 看護援助の方針 - prioritize bracket format, stop at end or next major section
+  const policyMatch = planContent.match(/【看護援助の方針】\s*\n+([\s\S]+?)(?=\n\s*---|\n\s*【訪問情報】|\n\s*【長期目標】|$)/i) ||
+                      planContent.match(/看護援助の方針\s*[:：]\s*\n+([\s\S]+?)(?=\n\s*---|\n\s*【訪問情報】|\n\s*【長期目標】|$)/) ||
+                      planContent.match(/\*\*看護援助の方針\s*[:：]\*\*\s*\n+([\s\S]+?)(?=\n\s*---|\n\s*【訪問情報】|\n\s*【長期目標】|$)/i)
   if (policyMatch) {
-    initialPlan.看護援助の方針 = policyMatch[1].trim()
+    initialPlan.看護援助の方針 = cleanContent(policyMatch[1])
   }
 
   return { soap: initialSoap, plan: initialPlan }

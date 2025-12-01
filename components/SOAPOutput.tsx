@@ -135,18 +135,19 @@ export default function SOAPOutput({
     }
 
     return (
-      <div className="group relative">
-        <p className={`text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal ${className}`}>
+      <div className="relative">
+        <p className={`text-gray-800 whitespace-pre-wrap leading-7 text-[15px] font-normal pr-7 ${className}`}>
           {displayValue}
         </p>
         <button
           onClick={() => handleEdit(field, value)}
-          className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+          className="absolute bottom-1 right-1 p-1"
           title="編集"
+          type="button"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-gray-600"
+            className="h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

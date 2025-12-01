@@ -4,15 +4,39 @@ from pydantic import BaseModel, Field
 class GenerateRequest(BaseModel):
     """Request body for /generate."""
 
-    chief_complaint: str = Field(
+    userName: str = Field(
+        default="",
+        description="利用者名",
+    )
+    diagnosis: str = Field(
+        default="",
+        description="主疾患",
+    )
+    nurses: list[str] = Field(
+        default_factory=list,
+        description="看護師名（複数選択可）",
+    )
+    visitDate: str = Field(
+        default="",
+        description="訪問日（YYYY-MM-DD形式）",
+    )
+    startTime: str = Field(
+        default="",
+        description="訪問開始時間（HH:MM形式）",
+    )
+    endTime: str = Field(
+        default="",
+        description="訪問終了時間（HH:MM形式）",
+    )
+    chiefComplaint: str = Field(
         default="",
         description="主訴（任意入力）",
     )
-    s: str = Field(
+    sText: str = Field(
         default="",
         description="S（主観）",
     )
-    o: str = Field(
+    oText: str = Field(
         default="",
         description="O（客観）",
     )

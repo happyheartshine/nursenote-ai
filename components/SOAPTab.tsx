@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { parseApiResponse } from '@/utils/parseApiResponse'
 import { copyToClipboard } from '@/lib/copyToClipboard'
+import { supabase } from '@/lib/supabaseClient'
 import VoiceInputButton from './VoiceInputButton'
 import SOAPOutput from './SOAPOutput'
 import { SoapOutput, PlanOutput } from './types'
@@ -117,11 +118,20 @@ export default function SOAPTab() {
     // Get default values
     const defaults = getDefaultValues()
 
+    // Get Supabase access token
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
+      setError('認証が必要です。再度ログインしてください。')
+      setLoading(false)
+      return
+    }
+
     try {
       const response = await fetch(`${BACKEND_URL}/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           userName: userName.trim() || defaults.userName,

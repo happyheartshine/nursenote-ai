@@ -1,8 +1,13 @@
 import HomePageClient from '@/components/HomePageClient'
+import AuthGuard from '@/components/AuthGuard'
 
 export const dynamic = 'force-dynamic'
 
 export default function HomePage() {
-  return <HomePageClient />
+  return (
+    <AuthGuard>
+      <HomePageClient />
+    </AuthGuard>
+  )
 }
 

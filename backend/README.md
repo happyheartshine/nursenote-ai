@@ -23,6 +23,9 @@ FastAPI backend that accepts psychiatric home-visit nursing inputs (chief compla
 
    ```
    OPENAI_API_KEY=sk-xxxx
+   # Supabase authentication (required for protected endpoints)
+   SUPABASE_PROJECT_URL=https://your-project.supabase.co
+   SUPABASE_JWT_SECRET=your-jwt-secret-from-supabase-dashboard
    # optional: override defaults
    # OPENAI_MODEL=gpt-4.1-mini
    # ALLOWED_ORIGINS=https://your-frontend.vercel.app,https://*.ngrok-free.app
@@ -45,6 +48,11 @@ FastAPI backend that accepts psychiatric home-visit nursing inputs (chief compla
 ## API
 
 ### POST `/generate`
+
+**Authentication Required**: This endpoint requires a valid Supabase JWT token in the `Authorization` header:
+```
+Authorization: Bearer <supabase-access-token>
+```
 
 Request body:
 
@@ -71,6 +79,7 @@ Possible error payloads (always JSON):
 
 | Status | Body example |
 | --- | --- |
+| 401 | `{ "detail": "Token has expired." }` or `{ "detail": "Invalid token: ..." }` |
 | 400 | `{ "error": "SまたはOのいずれか一方は必須です。" }` |
 | 502 | `{ "error": "AI生成中にエラーが発生しました。" }` |
 | 500 | `{ "error": "AI生成中にエラーが発生しました。" }` |

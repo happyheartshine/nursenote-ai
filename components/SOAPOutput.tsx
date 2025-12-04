@@ -165,12 +165,12 @@ export default function SOAPOutput({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md border border-gray-100 p-8 space-y-8">
+    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/50 p-8 sm:p-10 space-y-8 animate-fade-in">
       {/* S */}
       <div className="pb-6 border-b border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
-          <span className="inline-block w-10 h-10 rounded-lg bg-blue-50 text-blue-700 font-bold text-lg mr-3 text-center leading-10">S</span>
-          <span className="text-gray-600 font-medium text-base">主観</span>
+        <h3 className="text-xl font-bold text-gray-900 mb-4 tracking-tight flex items-center">
+          <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 font-bold text-lg mr-3 shadow-sm border border-blue-200/50">S</span>
+          <span className="text-gray-700 font-semibold text-base">主観</span>
         </h3>
         <div className="ml-[52px] mt-3">
           <EditableContent field="s" value={soapOutput.s} />
@@ -179,9 +179,9 @@ export default function SOAPOutput({
 
       {/* O */}
       <div className="pb-6 border-b border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
-          <span className="inline-block w-10 h-10 rounded-lg bg-green-50 text-green-700 font-bold text-lg mr-3 text-center leading-10">O</span>
-          <span className="text-gray-600 font-medium text-base">客観</span>
+        <h3 className="text-xl font-bold text-gray-900 mb-4 tracking-tight flex items-center">
+          <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-200 text-green-700 font-bold text-lg mr-3 shadow-sm border border-green-200/50">O</span>
+          <span className="text-gray-700 font-semibold text-base">客観</span>
         </h3>
         <div className="ml-[52px] mt-3">
           <EditableContent field="o" value={soapOutput.o} />
@@ -190,26 +190,26 @@ export default function SOAPOutput({
 
       {/* A */}
       <div className="pb-6 border-b border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-5 tracking-tight">
-          <span className="inline-block w-10 h-10 rounded-lg bg-amber-50 text-amber-700 font-bold text-lg mr-3 text-center leading-10">A</span>
-          <span className="text-gray-600 font-medium text-base">アセスメント</span>
+        <h3 className="text-xl font-bold text-gray-900 mb-5 tracking-tight flex items-center">
+          <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-amber-200 text-amber-700 font-bold text-lg mr-3 shadow-sm border border-amber-200/50">A</span>
+          <span className="text-gray-700 font-semibold text-base">アセスメント</span>
         </h3>
-        <div className="ml-13 space-y-5">
-          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-amber-200">
+        <div className="ml-[60px] space-y-5">
+          <div className="bg-gradient-to-r from-amber-50/80 to-orange-50/80 rounded-xl p-5 border-l-4 border-amber-400 shadow-sm hover:shadow-md transition-shadow duration-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【症状推移】</h4>
             <EditableContent field="a.症状推移" value={soapOutput.a.症状推移} />
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-red-200">
+          <div className="bg-gradient-to-r from-red-50/80 to-pink-50/80 rounded-xl p-5 border-l-4 border-red-400 shadow-sm hover:shadow-md transition-shadow duration-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">
               【リスク評価（自殺・他害・服薬）】
             </h4>
             <EditableContent field="a.リスク評価" value={soapOutput.a.リスク評価} />
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-200">
+          <div className="bg-gradient-to-r from-blue-50/80 to-cyan-50/80 rounded-xl p-5 border-l-4 border-blue-400 shadow-sm hover:shadow-md transition-shadow duration-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【背景要因】</h4>
             <EditableContent field="a.背景要因" value={soapOutput.a.背景要因} />
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-purple-200">
+          <div className="bg-gradient-to-r from-purple-50/80 to-violet-50/80 rounded-xl p-5 border-l-4 border-purple-400 shadow-sm hover:shadow-md transition-shadow duration-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【次回観察ポイント】</h4>
             <EditableContent field="a.次回観察ポイント" value={soapOutput.a.次回観察ポイント} />
           </div>
@@ -218,16 +218,16 @@ export default function SOAPOutput({
 
       {/* P */}
       <div className="pb-6 border-b border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-5 tracking-tight">
-          <span className="inline-block w-10 h-10 rounded-lg bg-indigo-50 text-indigo-700 font-bold text-lg mr-3 text-center leading-10">P</span>
-          <span className="text-gray-600 font-medium text-base">計画</span>
+        <h3 className="text-xl font-bold text-gray-900 mb-5 tracking-tight flex items-center">
+          <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-100 to-indigo-200 text-indigo-700 font-bold text-lg mr-3 shadow-sm border border-indigo-200/50">P</span>
+          <span className="text-gray-700 font-semibold text-base">計画</span>
         </h3>
-        <div className="ml-13 space-y-5">
-          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-indigo-200">
+        <div className="ml-[60px] space-y-5">
+          <div className="bg-gradient-to-r from-indigo-50/80 to-blue-50/80 rounded-xl p-5 border-l-4 border-indigo-400 shadow-sm hover:shadow-md transition-shadow duration-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【本日実施した援助】</h4>
             <EditableContent field="p.本日実施した援助" value={soapOutput.p.本日実施した援助} />
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-teal-200">
+          <div className="bg-gradient-to-r from-teal-50/80 to-cyan-50/80 rounded-xl p-5 border-l-4 border-teal-400 shadow-sm hover:shadow-md transition-shadow duration-200">
             <h4 className="text-[15px] font-semibold text-gray-900 mb-3 tracking-wide">【次回以降の方針】</h4>
             <EditableContent field="p.次回以降の方針" value={soapOutput.p.次回以降の方針} />
           </div>
@@ -275,8 +275,13 @@ export default function SOAPOutput({
 
       {/* 訪問情報 */}
       <div className="border-t-2 border-gray-200 pt-8 mt-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 tracking-tight">【訪問情報】</h3>
-        <div className="bg-gray-50 rounded-lg p-5 space-y-3 border border-gray-200">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 tracking-tight flex items-center">
+          <svg className="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          【訪問情報】
+        </h3>
+        <div className="bg-gradient-to-br from-gray-50/80 to-slate-50/80 rounded-xl p-6 space-y-3 border border-gray-200/50 shadow-sm">
           {visitDate && (
             <div className="flex items-start">
               <span className="text-gray-500 font-medium text-sm min-w-[100px]">訪問日</span>

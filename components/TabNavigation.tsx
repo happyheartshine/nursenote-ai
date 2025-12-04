@@ -15,20 +15,32 @@ const TABS: { key: TabKey; label: string }[] = [
 
 export default function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
   return (
-    <div className="flex border-b border-gray-200 mb-6 bg-white rounded-t-lg overflow-hidden">
-      {TABS.map((tab) => (
-        <button
-          key={tab.key}
-          onClick={() => onTabChange(tab.key)}
-          className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-            activeTab === tab.key
-              ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-          }`}
-        >
-          {tab.label}
-        </button>
-      ))}
+    <div className="relative bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-2 mb-6">
+      <div className="flex gap-2">
+        {TABS.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => onTabChange(tab.key)}
+            className={`relative flex-1 px-4 py-3.5 text-sm font-semibold rounded-xl transition-all duration-300 ${
+              activeTab === tab.key
+                ? 'text-white shadow-lg transform scale-[1.02]'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50/50'
+            }`}
+            style={
+              activeTab === tab.key
+                ? {
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)',
+                  }
+                : {}
+            }
+          >
+            <span className="relative z-10">{tab.label}</span>
+            {activeTab === tab.key && (
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 opacity-90 animate-pulse"></div>
+            )}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

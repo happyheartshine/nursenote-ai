@@ -291,8 +291,11 @@ export default function SOAPTab() {
   return (
     <div className="space-y-6">
       {/* Input Form */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
-        <h2 className="text-lg font-semibold text-gray-900">入力情報</h2>
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 sm:p-8 space-y-6">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full"></div>
+          <h2 className="text-xl font-bold text-gray-900">入力情報</h2>
+        </div>
 
         {/* 利用者名 */}
         <div>
@@ -303,7 +306,7 @@ export default function SOAPTab() {
             type="text"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white shadow-sm"
             placeholder="利用者名を入力"
             disabled={loading}
           />
@@ -317,7 +320,7 @@ export default function SOAPTab() {
           <select
             value={diagnosis}
             onChange={(e) => setDiagnosis(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-white"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white shadow-sm"
             disabled={loading}
           >
             <option value="">選択してください</option>
@@ -344,10 +347,10 @@ export default function SOAPTab() {
                   type="checkbox"
                   checked={selectedNurses.includes(nurse)}
                   onChange={() => toggleNurse(nurse)}
-                  className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-5 h-5 text-blue-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
                   disabled={loading}
                 />
-                <span className="text-base text-gray-700">{nurse}</span>
+                <span className="text-base text-gray-700 font-medium">{nurse}</span>
               </label>
             ))}
           </div>
@@ -362,7 +365,7 @@ export default function SOAPTab() {
             type="date"
             value={visitDate}
             onChange={(e) => setVisitDate(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white shadow-sm"
             disabled={loading}
           />
         </div>
@@ -377,7 +380,7 @@ export default function SOAPTab() {
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white shadow-sm"
               disabled={loading}
             />
           </div>
@@ -389,7 +392,7 @@ export default function SOAPTab() {
               type="time"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white shadow-sm"
               disabled={loading}
             />
           </div>
@@ -404,7 +407,7 @@ export default function SOAPTab() {
             type="text"
             value={chiefComplaint}
             onChange={(e) => setChiefComplaint(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white shadow-sm"
             placeholder="主訴を入力"
             disabled={loading}
           />
@@ -420,7 +423,7 @@ export default function SOAPTab() {
               ref={sTextareaRef}
               value={sText}
               onChange={(e) => setSText(e.target.value)}
-              className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base resize-none overflow-y-auto"
+              className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base resize-none overflow-y-auto bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white shadow-sm"
               style={{ maxHeight: `${MAX_TEXTAREA_HEIGHT}px` }}
               placeholder="S（任意）"
               rows={4}
@@ -445,7 +448,7 @@ export default function SOAPTab() {
               ref={oTextareaRef}
               value={oText}
               onChange={(e) => setOText(e.target.value)}
-              className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base resize-none overflow-y-auto"
+              className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base resize-none overflow-y-auto bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white shadow-sm"
               style={{ maxHeight: `${MAX_TEXTAREA_HEIGHT}px` }}
               placeholder="O（任意）"
               rows={4}
@@ -462,20 +465,30 @@ export default function SOAPTab() {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-3">
+      <div className="flex gap-4">
         <button
           type="button"
           onClick={handleGenerate}
           disabled={loading || !canSubmit}
-          className="flex-1 bg-blue-600 text-white py-4 px-6 rounded-lg font-medium text-base hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold text-base hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none disabled:shadow-md"
         >
-          {loading ? '生成中...' : '要約する（AI）'}
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              生成中...
+            </span>
+          ) : (
+            '要約する（AI）'
+          )}
         </button>
         <button
           type="button"
           onClick={handleClear}
           disabled={loading}
-          className="flex-1 bg-gray-200 text-gray-700 py-4 px-6 rounded-lg font-medium text-base hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-semibold text-base hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg border border-gray-200 hover:border-gray-300 transform hover:scale-[1.02] disabled:transform-none"
         >
           入力をクリア
         </button>
@@ -483,8 +496,13 @@ export default function SOAPTab() {
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-800 text-sm">{error}</p>
+        <div className="bg-gradient-to-r from-red-50 to-pink-50 border-l-4 border-red-500 rounded-xl p-4 shadow-md">
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-red-800 text-sm font-medium">{error}</p>
+          </div>
         </div>
       )}
 
@@ -508,9 +526,18 @@ export default function SOAPTab() {
           <button
             type="button"
             onClick={handleCopy}
-            className="w-full bg-green-600 text-white py-4 px-6 rounded-lg font-medium text-base hover:bg-green-700 transition-colors"
+            className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl font-semibold text-base hover:from-green-700 hover:to-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
           >
-            {copyState === 'copied' ? '✓ コピーしました' : 'すべてをコピー'}
+            {copyState === 'copied' ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                コピーしました
+              </span>
+            ) : (
+              'すべてをコピー'
+            )}
           </button>
           </div>
         )

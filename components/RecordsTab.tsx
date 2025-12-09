@@ -61,6 +61,7 @@ export default function RecordsTab() {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session.access_token}`,
+            'ngrok-skip-browser-warning': 'true',
           },
         })
 

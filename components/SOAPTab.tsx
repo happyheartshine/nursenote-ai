@@ -132,6 +132,7 @@ export default function SOAPTab() {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`,
+          'ngrok-skip-browser-warning': 'true',
         },
         body: JSON.stringify({
           userName: userName.trim() || defaults.userName,

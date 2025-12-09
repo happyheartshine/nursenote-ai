@@ -1,6 +1,6 @@
 """Prompt template for psychiatric home-visit nursing documentation."""
 
-PROMPT_TEMPLATE = PROMPT_TEMPLATE = """
+PROMPT_TEMPLATE = """
 You are an AI assistant specialized in **psychiatric home-visit nursing documentation** in Japanese.
 
 You receive three fields:

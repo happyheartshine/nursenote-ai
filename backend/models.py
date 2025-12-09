@@ -53,3 +53,37 @@ class ErrorResponse(BaseModel):
 
     error: str = Field(..., description="エラーメッセージ")
 
+
+class SOAPRecordResponse(BaseModel):
+    """Response model for a single SOAP record."""
+
+    id: str = Field(..., description="Record ID")
+    patient_name: str = Field(..., description="利用者名")
+    visit_date: str = Field(..., description="訪問日 (YYYY-MM-DD)")
+    chief_complaint: str | None = Field(None, description="主訴")
+    created_at: str = Field(..., description="作成日時")
+    diagnosis: str | None = Field(None, description="主疾患")
+    start_time: str | None = Field(None, description="訪問開始時間")
+    end_time: str | None = Field(None, description="訪問終了時間")
+
+
+class RecordsListResponse(BaseModel):
+    """Response model for list of SOAP records."""
+
+    records: list[SOAPRecordResponse] = Field(..., description="List of SOAP records")
+
+
+class FullSOAPRecordResponse(BaseModel):
+    """Response model for a single SOAP record with full SOAP and Plan data."""
+
+    id: str = Field(..., description="Record ID")
+    patient_name: str = Field(..., description="利用者名")
+    visit_date: str = Field(..., description="訪問日 (YYYY-MM-DD)")
+    chief_complaint: str | None = Field(None, description="主訴")
+    created_at: str = Field(..., description="作成日時")
+    diagnosis: str | None = Field(None, description="主疾患")
+    start_time: str | None = Field(None, description="訪問開始時間")
+    end_time: str | None = Field(None, description="訪問終了時間")
+    nurses: list[str] = Field(default_factory=list, description="看護師名リスト")
+    soap_output: dict = Field(..., description="SOAP出力データ (JSON)")
+    plan_output: dict | None = Field(None, description="看護計画出力データ (JSON)")

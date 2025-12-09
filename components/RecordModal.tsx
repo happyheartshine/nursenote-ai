@@ -65,6 +65,21 @@ export default function RecordModal({ recordId, onClose }: RecordModalProps) {
           },
         })
 
+        // Check if response is HTML (error page) instead of JSON
+        const contentType = response.headers.get('content-type')
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text()
+          console.error('Non-JSON response received:', {
+            url: `${BACKEND_URL}/records/${recordId}`,
+            status: response.status,
+            contentType,
+            preview: text.substring(0, 200),
+          })
+          throw new Error(
+            `バックエンドサーバーに接続できません。URLを確認してください: ${BACKEND_URL || '未設定'}`
+          )
+        }
+
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({ error: 'エラーが発生しました' }))
           throw new Error(errorData.error || errorData.detail || `APIエラー: ${response.status}`)

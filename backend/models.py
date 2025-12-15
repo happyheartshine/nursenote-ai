@@ -87,3 +87,10 @@ class FullSOAPRecordResponse(BaseModel):
     nurses: list[str] = Field(default_factory=list, description="看護師名リスト")
     soap_output: dict = Field(..., description="SOAP出力データ (JSON)")
     plan_output: dict | None = Field(None, description="看護計画出力データ (JSON)")
+
+
+class PDFGenerationResponse(BaseModel):
+    """Response model for PDF generation endpoints."""
+
+    pdf_url: str = Field(..., description="Presigned URL to download the generated PDF")
+    s3_key: str = Field(..., description="S3 key where the PDF was uploaded")

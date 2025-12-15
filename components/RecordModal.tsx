@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import SOAPOutput from './SOAPOutput'
 import { SoapOutput, PlanOutput } from './types'
+import PDFDownloadButton from './PDFDownloadButton'
+import PDFPreviewButton from './PDFPreviewButton'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || ''
 
@@ -30,6 +32,7 @@ export default function RecordModal({ recordId, onClose }: RecordModalProps) {
   const [record, setRecord] = useState<FullSOAPRecord | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null)
 
   useEffect(() => {
     if (!recordId) {
@@ -172,15 +175,58 @@ export default function RecordModal({ recordId, onClose }: RecordModalProps) {
           )}
 
           {!loading && !error && record && (
-            <SOAPOutput
-              soapOutput={record.soap_output}
-              planOutput={record.plan_output}
-              visitDate={record.visit_date}
-              startTime={record.start_time || ''}
-              endTime={record.end_time || ''}
-              selectedNurses={record.nurses}
-              diagnosis={record.diagnosis || ''}
-            />
+            <>
+              {/* PDF Actions */}
+              <div className="mb-6 space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <PDFDownloadButton
+                    label="訪問看護記録書Ⅱ PDFをダウンロード"
+                    endpoint={`/pdf/visit-report/${record.id}`}
+                    filename={`visit_report_${record.id}.pdf`}
+                  />
+                  <PDFPreviewButton
+                    label={pdfPreviewUrl ? '訪問看護記録書Ⅱ プレビューを閉じる' : '訪問看護記録書Ⅱ をプレビュー'}
+                    endpoint={`/pdf/visit-report/${record.id}`}
+                    isActive={!!pdfPreviewUrl}
+                    onPreviewReady={(url) => setPdfPreviewUrl(url)}
+                  />
+                </div>
+
+                {pdfPreviewUrl && (
+                  <div className="mt-2 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                    <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-200">
+                      <span className="text-sm font-medium text-gray-700">PDFプレビュー</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPdfPreviewUrl(null)
+                        }}
+                        className="text-xs text-gray-500 hover:text-gray-700"
+                      >
+                        閉じる
+                      </button>
+                    </div>
+                    <div className="w-full h-[480px] bg-gray-100">
+                      <iframe
+                        src={pdfPreviewUrl}
+                        title="PDF preview"
+                        className="w-full h-full"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <SOAPOutput
+                soapOutput={record.soap_output}
+                planOutput={record.plan_output}
+                visitDate={record.visit_date}
+                startTime={record.start_time || ''}
+                endTime={record.end_time || ''}
+                selectedNurses={record.nurses}
+                diagnosis={record.diagnosis || ''}
+              />
+            </>
           )}
         </div>
       </div>

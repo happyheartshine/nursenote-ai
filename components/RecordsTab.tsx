@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import RecordModal from './RecordModal'
+import MonthlyReportPDF from './MonthlyReportPDF'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || ''
 
@@ -38,6 +39,20 @@ export default function RecordsTab() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null)
+  const [selectedPatientId, setSelectedPatientId] = useState<string>('')
+
+  // Extract unique patient names from records
+  const patientNames = useMemo(() => {
+    const uniqueNames = Array.from(new Set(records.map((r) => r.patient_name)))
+    return uniqueNames.sort()
+  }, [records])
+
+  // Set first patient as default when records are loaded
+  useEffect(() => {
+    if (patientNames.length > 0 && !selectedPatientId) {
+      setSelectedPatientId(patientNames[0])
+    }
+  }, [patientNames, selectedPatientId])
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -101,6 +116,48 @@ export default function RecordsTab() {
 
   return (
     <div className="space-y-6">
+      {/* Monthly Report Section */}
+      {!loading && !error && patientNames.length > 0 && (
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 sm:p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full"></div>
+            <h2 className="text-xl font-bold text-gray-900">月次レポートPDF生成</h2>
+          </div>
+
+          {/* Patient Selection */}
+          <div className="mb-6">
+            <label htmlFor="patient-select" className="block text-sm font-medium text-gray-700 mb-2">
+              利用者を選択
+            </label>
+            <select
+              id="patient-select"
+              value={selectedPatientId}
+              onChange={(e) => setSelectedPatientId(e.target.value)}
+              className="
+                w-full px-4 py-3
+                border border-gray-300 rounded-lg
+                bg-white text-gray-900 text-base
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                touch-manipulation
+              "
+              aria-label="利用者を選択"
+            >
+              {patientNames.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Monthly Report PDF Component */}
+          {selectedPatientId && (
+            <MonthlyReportPDF patientId={selectedPatientId} />
+          )}
+        </div>
+      )}
+
+      {/* Records List */}
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 sm:p-8">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full"></div>
